@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JL NewReleases — Admin · Editar catálogo</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <a href="../index.html" class="brand">JL <span>NewReleases</span></a>
+      <nav class="admin-nav mt-24">
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="subir.html">⬆ Subir video</a>
+        <a href="editar.html" class="active">✏ Editar catálogo</a>
+        <a href="estadisticas.html">📈 Estadísticas</a>
+        <a href="../index.html">← Volver al sitio</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <h1 style="font-size:1.8rem;">Editar catálogo</h1>
+      <p class="muted mt-24">Vista de referencia — conecta esta tabla a tu base de datos para editar/eliminar en vivo.</p>
+
+      <table class="admin-table mt-24">
+        <thead>
+          <tr>
+            <th>ID</th><th>Título</th><th>Categoría</th><th>Año</th><th>Nuevo</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="videos-tbody"></tbody>
+      </table>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JL NewReleases — Admin · Estadísticas</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <a href="../index.html" class="brand">JL <span>NewReleases</span></a>
+      <nav class="admin-nav mt-24">
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="subir.html">⬆ Subir video</a>
+        <a href="editar.html">✏ Editar catálogo</a>
+        <a href="estadisticas.html" class="active">📈 Estadísticas</a>
+        <a href="../index.html">← Volver al sitio</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <h1 style="font-size:1.8rem;">Estadísticas</h1>
+      <div class="stat-grid mt-24" id="stat-grid"></div>
+
+      <div class="panel mt-24">
+        <p class="muted">Conecta aquí gráficos reales (ej. Chart.js) con datos de vistas, favoritos y usuarios activos desde Firestore.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
