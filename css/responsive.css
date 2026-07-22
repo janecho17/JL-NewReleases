@@ -1,0 +1,24 @@
+/* ============================================================
+   JL NewReleases — responsive.css
+   ============================================================ */
+
+@media (max-width: 900px){
+  .nav{ flex-wrap: wrap; gap: 10px 16px; }
+  .nav-links{ order: 3; width:100%; justify-content:flex-start; gap:14px; }
+  .hero{ min-height: 50vh; padding: 40px 0 32px; }
+}
+
+@media (max-width: 640px){
+  .container{ padding: 0 16px; }
+  .grid{ grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+  .whatsapp-link span{ display:none; }
+  .whatsapp-link{ padding: 8px 10px; }
+  .hero-actions{ flex-direction:column; }
+  .btn{ width:100%; }
+  .footer-grid{ flex-direction:column; gap:16px; }
+}
+
+@media (max-width: 420px){
+  h1{ font-size: 1.9rem; }
+  .panel{ padding: 20px; }
+}
