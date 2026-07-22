@@ -1,0 +1,80 @@
+/* ============================================================
+   JL NewReleases — admin.css
+   Panel de administración
+   ============================================================ */
+
+.admin-layout{
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar{
+  background: var(--bg-panel);
+  border-right: 1px solid var(--line);
+  padding: 24px 16px;
+}
+.admin-sidebar .brand{ display:block; margin-bottom: 26px; }
+.admin-nav a{
+  display:flex; align-items:center; gap:10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-weight:600; font-size:0.9rem;
+  margin-bottom: 4px;
+}
+.admin-nav a:hover, .admin-nav a.active{
+  background: var(--bg-panel-2);
+  color: var(--accent-gold);
+}
+
+.admin-main{ padding: 28px 32px; }
+
+.stat-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.stat-card{
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.stat-card .value{
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--accent-gold);
+}
+.stat-card .label{ color: var(--text-muted); font-size:0.82rem; }
+
+table.admin-table{
+  width:100%;
+  border-collapse: collapse;
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow:hidden;
+}
+table.admin-table th, table.admin-table td{
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align:left;
+  font-size: 0.88rem;
+}
+table.admin-table th{ color: var(--text-muted); font-weight:600; }
+table.admin-table tr:last-child td{ border-bottom:none; }
+
+.upload-drop{
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 40px;
+  text-align:center;
+  color: var(--text-muted);
+}
+
+@media (max-width: 800px){
+  .admin-layout{ grid-template-columns: 1fr; }
+  .admin-sidebar{ border-right:none; border-bottom:1px solid var(--line); }
+}
