@@ -1,80 +1,123 @@
-/* ============================================================
-   JL NewReleases — admin.css
-   Panel de administración
-   ============================================================ */
-
-.admin-layout{
-  display:grid;
-  grid-template-columns: 220px 1fr;
-  min-height: 100vh;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
 }
 
-.admin-sidebar{
-  background: var(--bg-panel);
-  border-right: 1px solid var(--line);
-  padding: 24px 16px;
-}
-.admin-sidebar .brand{ display:block; margin-bottom: 26px; }
-.admin-nav a{
-  display:flex; align-items:center; gap:10px;
-  padding: 10px 12px;
-  border-radius: var(--radius);
-  color: var(--text-muted);
-  font-weight:600; font-size:0.9rem;
-  margin-bottom: 4px;
-}
-.admin-nav a:hover, .admin-nav a.active{
-  background: var(--bg-panel-2);
-  color: var(--accent-gold);
+body{
+background:#0f1115;
+color:#fff;
 }
 
-.admin-main{ padding: 28px 32px; }
-
-.stat-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap: 16px;
-  margin-bottom: 28px;
-}
-.stat-card{
-  background: var(--bg-panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px;
-}
-.stat-card .value{
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--accent-gold);
-}
-.stat-card .label{ color: var(--text-muted); font-size:0.82rem; }
-
-table.admin-table{
-  width:100%;
-  border-collapse: collapse;
-  background: var(--bg-panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow:hidden;
-}
-table.admin-table th, table.admin-table td{
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--line);
-  text-align:left;
-  font-size: 0.88rem;
-}
-table.admin-table th{ color: var(--text-muted); font-weight:600; }
-table.admin-table tr:last-child td{ border-bottom:none; }
-
-.upload-drop{
-  border: 2px dashed var(--line);
-  border-radius: var(--radius);
-  padding: 40px;
-  text-align:center;
-  color: var(--text-muted);
+.admin{
+display:flex;
+min-height:100vh;
 }
 
-@media (max-width: 800px){
-  .admin-layout{ grid-template-columns: 1fr; }
-  .admin-sidebar{ border-right:none; border-bottom:1px solid var(--line); }
+.sidebar{
+width:260px;
+background:#181b22;
+padding:30px 20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+box-shadow:2px 0 15px rgba(0,0,0,.3);
+}
+
+.sidebar h2{
+color:#f5c518;
+margin-bottom:20px;
+}
+
+.sidebar a{
+color:#fff;
+text-decoration:none;
+padding:12px;
+border-radius:8px;
+transition:.3s;
+}
+
+.sidebar a:hover{
+background:#f5c518;
+color:#000;
+}
+
+.content{
+flex:1;
+padding:40px;
+}
+
+.content h1{
+margin-bottom:25px;
+}
+
+form{
+background:#1d212b;
+padding:25px;
+border-radius:15px;
+display:grid;
+gap:15px;
+max-width:800px;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:12px;
+background:#2a2f3b;
+border:none;
+border-radius:8px;
+color:white;
+font-size:15px;
+}
+
+textarea{
+min-height:120px;
+resize:vertical;
+}
+
+input[type=file]{
+background:#232833;
+padding:10px;
+}
+
+button{
+background:#f5c518;
+color:#000;
+font-weight:bold;
+border:none;
+padding:14px;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.02);
+}
+
+#estado{
+margin-top:20px;
+font-weight:bold;
+}
+
+@media(max-width:900px){
+
+.admin{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+flex-direction:row;
+overflow:auto;
+}
+
+.content{
+padding:20px;
+}
+
 }
