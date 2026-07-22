@@ -3,44 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel de Administración</title>
+
+<title>JL Admin</title>
 
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/admin.css">
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="admin">
 
-<h1>Subir nueva película</h1>
+    <aside class="sidebar">
 
-<form id="subir-form">
+        <h2>🎬 JL Admin</h2>
 
-<label>Título</label>
-<input type="text" id="titulo" required>
+        <a href="#">🏠 Dashboard</a>
+        <a href="#">🎥 Películas</a>
+        <a href="#">👤 Usuarios</a>
+        <a href="#">⭐ Favoritos</a>
+        <a href="#">⚙ Configuración</a>
 
-<label>Descripción</label>
-<textarea id="descripcion" required></textarea>
+    </aside>
 
-<label>Categoría</label>
-<input type="text" id="categoria">
+    <main class="content">
 
-<label>Año</label>
-<input type="number" id="anio">
+        <h1>Subir nueva película</h1>
 
-<label>Portada</label>
-<input type="file" id="portada" accept="image/*">
+        <form id="subir-form">
 
-<label>Película (video)</label>
-<input type="file" id="video" accept="video/*">
+            <input id="titulo" type="text" placeholder="Título" required>
 
-<button type="submit">
-Subir película
-</button>
+            <textarea
+                id="descripcion"
+                placeholder="Descripción"
+                required></textarea>
 
-</form>
+            <input
+                id="categoria"
+                type="text"
+                placeholder="Categoría">
 
-<p id="estado"></p>
+            <input
+                id="anio"
+                type="number"
+                placeholder="Año">
+
+            <label>Portada</label>
+
+            <input
+                id="portada"
+                type="file"
+                accept="image/*">
+
+            <label>Video</label>
+
+            <input
+                id="video"
+                type="file"
+                accept="video/*">
+
+            <button type="submit">
+
+                Publicar película
+
+            </button>
+
+        </form>
+
+        <p id="estado"></p>
+
+    </main>
 
 </div>
 
