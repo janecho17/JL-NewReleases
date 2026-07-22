@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JL NewReleases — Explorar</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body data-page="explorar.html">
+
+  <div id="site-header"></div>
+
+  <section class="section container">
+    <div class="section-head">
+      <h1 style="font-size:2rem;">Catálogo</h1>
+    </div>
+    <div class="chips mt-24" id="category-chips" style="margin-bottom:24px;"></div>
+    <div class="grid" id="catalog-grid"></div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const catalog = await loadCatalog();
+      const grid = document.getElementById("catalog-grid");
+      const chipsWrap = document.getElementById("category-chips");
+
+      const categories = ["Todos", ...new Set(catalog.map((v) => v.category))];
+
+      function paint(filtered) {
+        grid.innerHTML = filtered.map((v) => videoCardHTML(v)).join("");
+      }
+
+      chipsWrap.innerHTML = categories
+        .map((c, i) => `<button class="chip ${i === 0 ? "active" : ""}" data-cat="${c}">${c}</button>`)
+        .join("");
+
+      chipsWrap.querySelectorAll(".chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chipsWrap.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          const cat = chip.dataset.cat;
+          paint(cat === "Todos" ? catalog : catalog.filter((v) => v.category === cat));
+        });
+      });
+
+      paint(catalog);
+    });
+  </script>
+</body>
+</html>

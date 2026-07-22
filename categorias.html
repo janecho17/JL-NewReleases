@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JL NewReleases — Categorías</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body data-page="categorias.html">
+
+  <div id="site-header"></div>
+
+  <section class="section container">
+    <h1 style="font-size:2rem;">Categorías</h1>
+    <p class="muted mt-24">Elige un género para ver todo lo disponible.</p>
+    <div class="grid mt-24" id="categorias-grid"></div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const catalog = await loadCatalog();
+      const wrap = document.getElementById("categorias-grid");
+
+      const counts = {};
+      catalog.forEach((v) => (counts[v.category] = (counts[v.category] || 0) + 1));
+
+      wrap.innerHTML = Object.entries(counts)
+        .map(
+          ([cat, count]) => `
+          <a class="card" href="explorar.html">
+            <div class="poster">${cat}</div>
+            <div class="info">
+              <h3>${cat}</h3>
+              <p>${count} título${count > 1 ? "s" : ""}</p>
+            </div>
+          </a>`
+        )
+        .join("");
+    });
+  </script>
+</body>
+</html>
