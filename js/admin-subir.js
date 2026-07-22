@@ -12,6 +12,24 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+onAuthStateChanged(auth, (user) => {
+
+  if (!user) {
+    window.location.href = "../login.html";
+    return;
+  }
+
+  if (user.email !== "jacnerlopez2020@gmail.com") {
+    alert("No tienes permiso para entrar.");
+    window.location.href = "../index.html";
+    return;
+  }
+
+});
 const form = document.getElementById("subir-form");
 
 if (form) {
