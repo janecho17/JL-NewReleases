@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta - JL NewReleases</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="login-container">
+    <form id="register-form" class="login-card">
+
+        <h2>Crear cuenta</h2>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Nombre completo"
+            required>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Correo electrónico"
+            required>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+            required>
+
+        <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirmar contraseña"
+            required>
+
+        <button type="submit">
+            Crear cuenta
+        </button>
+
+        <div id="register-error" style="color:red;margin-top:10px;"></div>
+
+        <p>
+            ¿Ya tienes cuenta?
+            <a href="login.html">Inicia sesión</a>
+        </p>
+
+    </form>
+</div>
+
+<script type="module" src="js/register.js"></script>
+
+</body>
+</html>
