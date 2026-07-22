@@ -1,7 +1,5 @@
-/* ============================================================
-   JL NewReleases — auth.js
-   Autenticación simulada (reemplazar por backend real / Firebase Auth)
-   ============================================================ */
+import { auth } from "./firebase.js";
+import { signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("login-form");
@@ -9,28 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const errorBox = document.getElementById("login-error");
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
-    if (!email || !password) {
-      errorBox.textContent = "Completa correo y contraseña.";
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = "perfil.html";
+    } catch (error) {
       errorBox.style.display = "block";
-      return;
+      errorBox.textContent = "Correo o contraseña incorrectos.";
     }
-
-    // TODO: reemplazar por autenticación real (ej. Firebase Auth)
-    localStorage.setItem("jl_user", JSON.stringify({ email }));
-    window.location.href = "perfil.html";
   });
 });
 
-function logout() {
-  localStorage.removeItem("jl_user");
+export async function logout() {
+  await signOut(auth);
   window.location.href = "login.html";
-}
-
-function currentUser() {
-  return JSON.parse(localStorage.getItem("jl_user") || "null");
 }
