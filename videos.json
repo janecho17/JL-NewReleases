@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "Ciudad de Cristal",
+    "category": "Acción",
+    "year": 2026,
+    "isNew": true,
+    "description": "Un detective debe detener una conspiración antes de que la ciudad colapse.",
+    "url": ""
+  },
+  {
+    "id": 2,
+    "title": "Noches sin Fin",
+    "category": "Drama",
+    "year": 2025,
+    "isNew": true,
+    "description": "Una familia enfrenta secretos del pasado durante un verano decisivo.",
+    "url": ""
+  },
+  {
+    "id": 3,
+    "title": "Risas de Barrio",
+    "category": "Comedia",
+    "year": 2024,
+    "isNew": false,
+    "description": "Un grupo de vecinos organiza el evento más caótico del año.",
+    "url": ""
+  },
+  {
+    "id": 4,
+    "title": "El Último Horizonte",
+    "category": "Ciencia Ficción",
+    "year": 2026,
+    "isNew": true,
+    "description": "La tripulación de una nave debe decidir el destino de la humanidad.",
+    "url": ""
+  },
+  {
+    "id": 5,
+    "title": "Sombra Profunda",
+    "category": "Terror",
+    "year": 2025,
+    "isNew": false,
+    "description": "Una casa antigua esconde algo más que recuerdos.",
+    "url": ""
+  },
+  {
+    "id": 6,
+    "title": "Ritmo Latino",
+    "category": "Musical",
+    "year": 2024,
+    "isNew": false,
+    "description": "Una bailarina lucha por cumplir su sueño en la gran ciudad.",
+    "url": ""
+  }
+]
