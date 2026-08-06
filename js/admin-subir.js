@@ -9,7 +9,9 @@ import {
 import {
   collection,
   addDoc,
-  serverTimestamp
+  serverTimestamp,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 import {
@@ -18,17 +20,37 @@ import {
 
 const estado = document.getElementById("estado");
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
     window.location.href = "../login.html";
     return;
   }
 
-  if (user.email !== "jacnerlopez2020@gmail.com") {
-    alert("No tienes permiso para entrar.");
+  try {
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      alert("No existe información del usuario.");
+      window.location.href = "../index.html";
+      return;
+    }
+
+    const datos = docSnap.data();
+
+    if (datos.role !== "admin") {
+      alert("No tienes permiso para entrar.");
+      window.location.href = "../index.html";
+      return;
+    }
+
+    console.log("Administrador autorizado");
+
+  } catch (error) {
+    console.error(error);
+    alert("Error al verificar permisos.");
     window.location.href = "../index.html";
-    return;
   }
 
 });
