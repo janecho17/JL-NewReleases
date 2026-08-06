@@ -1,0 +1,170 @@
+/* ============================================================
+   JL NewReleases — admin.css
+   Panel de administración: mismo lenguaje visual que el sitio
+   (usa las variables definidas en style.css: --bg-void, --bg-panel,
+   --accent-gold, etc). Este archivo se carga después de style.css.
+   ============================================================ */
+
+.admin-layout{
+  display:flex;
+  min-height:100vh;
+}
+
+.admin-sidebar{
+  width:250px;
+  flex-shrink:0;
+  background: var(--bg-panel);
+  border-right: 1px solid var(--line);
+  padding: 24px 18px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.admin-sidebar .brand{
+  padding: 0 8px 18px;
+  display:block;
+}
+
+.admin-nav{
+  display:flex;
+  flex-direction:column;
+  gap: 4px;
+}
+
+.admin-nav a{
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight:600;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  transition: background .15s ease, color .15s ease;
+}
+
+.admin-nav a:hover{
+  background: var(--bg-panel-2);
+  color: var(--text-primary);
+}
+
+.admin-nav a.active{
+  background: var(--accent-gold);
+  color: #1A1400;
+}
+
+.admin-main{
+  flex:1;
+  padding: 36px 40px;
+  min-width:0;
+}
+
+/* ---------- Tarjetas de estadísticas ---------- */
+.stat-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.stat-card{
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.stat-card .value{
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--accent-gold);
+  line-height:1;
+}
+
+.stat-card .label{
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* ---------- Tabla de edición del catálogo ---------- */
+.admin-table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table th{
+  text-align:left;
+  color: var(--text-muted);
+  font-weight:600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-table td{
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-table a{
+  color: var(--accent-gold);
+  font-weight:600;
+}
+
+/* ---------- Formulario de subida (admin/subir.html) ---------- */
+#subir-form{
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  padding: 26px;
+  border-radius: var(--radius);
+  display:grid;
+  gap: 14px;
+  max-width: 640px;
+}
+
+#subir-form label{
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight:600;
+}
+
+#subir-form input,
+#subir-form textarea{
+  width:100%;
+  padding: 11px 12px;
+  background: var(--bg-void);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+#subir-form textarea{ min-height: 110px; resize: vertical; }
+
+#subir-form input[type="file"]{ padding: 8px; }
+
+#subir-form button{
+  background: var(--accent-gold);
+  color: #1A1400;
+  font-weight:700;
+  border:none;
+  padding: 13px;
+  border-radius: var(--radius);
+  cursor:pointer;
+  font-size: 0.95rem;
+  transition: filter .15s ease;
+}
+
+#subir-form button:hover{ filter: brightness(1.08); }
+
+#estado{
+  margin-top: 16px;
+  font-weight:600;
+  color: var(--accent-green);
+}
+
+@media (max-width: 900px){
+  .admin-layout{ flex-direction: column; }
+  .admin-sidebar{ width:100%; flex-direction:row; overflow-x:auto; }
+  .admin-nav{ flex-direction:row; }
+  .admin-main{ padding: 24px 20px; }
+}
