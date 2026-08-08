@@ -49,27 +49,166 @@ onAuthStateChanged(auth, async (user) => {
 
 });
 
-async function subirArchivo(file) {
+async function subirArchivo(file, onProgress) {
 
-  const formData = new FormData();
+  const WORKER_URL =
+    "https://jlnewreleases-upload.jacnerlopez2020.workers.dev";
 
-  formData.append("file", file);
+  const CHUNK_SIZE = 10 * 1024 * 1024; // 10 MB
 
-  const respuesta = await fetch(
-    "https://jlnewreleases-upload.jacnerlopez2020.workers.dev/upload",
+  // ==============================
+  // 1. INICIAR SUBIDA
+  // ==============================
+
+  const startResponse = await fetch(
+    `${WORKER_URL}/upload/start`,
     {
       method: "POST",
-      body: formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        fileName: file.name,
+        contentType: file.type
+      })
     }
   );
 
-  if (!respuesta.ok) {
-    throw new Error("No se pudo subir el archivo.");
+  if (!startResponse.ok) {
+    throw new Error("No se pudo iniciar la subida.");
   }
 
-  const datos = await respuesta.json();
+  const startData = await startResponse.json();
 
-  return datos.url;
+  const {
+    key,
+    uploadId
+  } = startData;
+
+  // ==============================
+  // 2. SUBIR PARTES
+  // ==============================
+
+  const parts = [];
+
+  const totalParts =
+    Math.ceil(file.size / CHUNK_SIZE);
+
+  for (
+    let partNumber = 1;
+    partNumber <= totalParts;
+    partNumber++
+  ) {
+
+    const start =
+      (partNumber - 1) * CHUNK_SIZE;
+
+    const end =
+      Math.min(
+        start + CHUNK_SIZE,
+        file.size
+      );
+
+    const chunk =
+      file.slice(start, end);
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "key",
+      key
+    );
+
+    formData.append(
+      "uploadId",
+      uploadId
+    );
+
+    formData.append(
+      "partNumber",
+      String(partNumber)
+    );
+
+    formData.append(
+      "file",
+      chunk,
+      file.name
+    );
+
+    const partResponse =
+      await fetch(
+        `${WORKER_URL}/upload/part`,
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+    if (!partResponse.ok) {
+      throw new Error(
+        `Error al subir la parte ${partNumber}.`
+      );
+    }
+
+    const partData =
+      await partResponse.json();
+
+    parts.push({
+      partNumber,
+      etag: partData.etag
+    });
+
+    const porcentaje =
+      Math.round(
+        (end / file.size) * 100
+      );
+
+    if (onProgress) {
+      onProgress(porcentaje);
+    }
+  }
+
+  // ==============================
+  // 3. COMPLETAR EN R2
+  // ==============================
+
+  const completeResponse =
+    await fetch(
+      `${WORKER_URL}/upload/complete`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          key,
+          uploadId,
+          parts
+        })
+      }
+    );
+
+  if (!completeResponse.ok) {
+    throw new Error(
+      "No se pudo completar la subida en R2."
+    );
+  }
+
+  const completeData =
+    await completeResponse.json();
+
+  if (!completeData.url) {
+    throw new Error(
+      "R2 no devolvió la URL del archivo."
+    );
+  }
+
+  if (onProgress) {
+    onProgress(100);
+  }
+
+  return completeData.url;
 }
 
 const form = document.getElementById("subir-form");
@@ -92,13 +231,19 @@ if (form) {
 
       estado.textContent = "Subiendo portada...";
 
-      const portadaURL = await subirArchivo(portada);
+      const portadaURL = await subirArchivo(
+  portada,
+  (pct) => {
+    estado.textContent = `Subiendo portada... ${pct}%`;
+  }
+);
 
-      estado.textContent = "Subiendo video...";
-
-      const videoURL = await subirArchivo(video);
-
-      estado.textContent = "Guardando en el catálogo…";
+      const videoURL = await subirArchivo(
+  video,
+  (pct) => {
+    estado.textContent = `Subiendo video... ${pct}%`;
+  }
+);
 
       await addDoc(collection(db, "peliculas"), {
         titulo,
