@@ -1,10 +1,4 @@
-import { storage, db, auth } from "./firebase.js";
-
-import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
+import { db, auth } from "./firebase.js";
 
 import {
   collection,
@@ -55,17 +49,27 @@ onAuthStateChanged(auth, async (user) => {
 
 });
 
-function subirArchivo(path, file, onProgress) {
-  return new Promise((resolve, reject) => {
-    const fileRef = ref(storage, path);
-    const task = uploadBytesResumable(fileRef, file);
-    task.on(
-      "state_changed",
-      (snap) => onProgress(Math.round((snap.bytesTransferred / snap.totalBytes) * 100)),
-      reject,
-      async () => resolve(await getDownloadURL(task.snapshot.ref))
-    );
-  });
+async function subirArchivo(file) {
+
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  const respuesta = await fetch(
+    "https://jlnewreleases-upload.jacnerlopez2020.workers.dev/upload",
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  if (!respuesta.ok) {
+    throw new Error("No se pudo subir el archivo.");
+  }
+
+  const datos = await respuesta.json();
+
+  return datos.url;
 }
 
 const form = document.getElementById("subir-form");
@@ -85,20 +89,14 @@ if (form) {
 
     try {
       estado.style.color = "";
-      estado.textContent = "Subiendo portada…";
-      const portadaURL = await subirArchivo(
-        "portadas/" + Date.now() + "_" + portada.name,
-        portada,
-        (pct) => (estado.textContent = `Subiendo portada… ${pct}%`)
-      );
 
-      // Los videos grandes (varios GB) pueden tardar bastante según tu
-      // conexión de subida; no cierres esta pestaña mientras avanza.
-      const videoURL = await subirArchivo(
-        "videos/" + Date.now() + "_" + video.name,
-        video,
-        (pct) => (estado.textContent = `Subiendo video… ${pct}% (no cierres esta pestaña)`)
-      );
+      estado.textContent = "Subiendo portada...";
+
+      const portadaURL = await subirArchivo(portada);
+
+      estado.textContent = "Subiendo video...";
+
+      const videoURL = await subirArchivo(video);
 
       estado.textContent = "Guardando en el catálogo…";
 
@@ -119,6 +117,7 @@ if (form) {
       console.error(err);
       estado.style.color = "var(--accent-red)";
       estado.textContent = "✖ Error al subir: " + err.message;
+
     } finally {
       submitBtn.disabled = false;
     }
