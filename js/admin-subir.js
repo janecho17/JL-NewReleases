@@ -73,6 +73,7 @@ async function subirArchivo(file, onProgress) {
       })
     }
   );
+  console.log("START RESPONSE:", startResponse.status);
 
   if (!startResponse.ok) {
     throw new Error("No se pudo iniciar la subida.");
