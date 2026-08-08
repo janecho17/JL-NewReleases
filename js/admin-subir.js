@@ -54,7 +54,7 @@ async function subirArchivo(file, onProgress) {
   const WORKER_URL =
     "https://jlnewreleases-upload.jacnerlopez2020.workers.dev";
 
-  const CHUNK_SIZE = 10 * 1024 * 1024; // 10 MB
+  const CHUNK_SIZE = 5 * 1024 * 1024; // 10 MB
 
   // ==============================
   // 1. INICIAR SUBIDA
