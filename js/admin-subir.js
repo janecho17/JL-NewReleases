@@ -54,7 +54,7 @@ async function subirArchivo(file, onProgress) {
   const WORKER_URL =
     "https://jlnewreleases-upload.jacnerlopez2020.workers.dev";
 
-  const CHUNK_SIZE = 5 * 1024 * 1024; // 10 MB
+  const CHUNK_SIZE = 50 * 1024 * 1024; // 50 MB
 
   // ==============================
   // 1. INICIAR SUBIDA
@@ -113,8 +113,12 @@ async function subirArchivo(file, onProgress) {
     const chunk =
       file.slice(start, end);
 
-    const formData =
-      new FormData();
+    let partData;
+let ultimoError;
+
+for (let intento = 1; intento <= 5; intento++) {
+  try {
+    const formData = new FormData();
 
     formData.append(
       "key",
@@ -137,23 +141,56 @@ async function subirArchivo(file, onProgress) {
       file.name
     );
 
-    const partResponse =
-      await fetch(
-        `${WORKER_URL}/upload/part`,
-        {
-          method: "POST",
-          body: formData
-        }
-      );
+    const partResponse = await fetch(
+      `${WORKER_URL}/upload/part`,
+      {
+        method: "POST",
+        body: formData
+      }
+    );
 
     if (!partResponse.ok) {
+      const errorText = await partResponse.text();
+
       throw new Error(
-        `Error al subir la parte ${partNumber}.`
+        `HTTP ${partResponse.status}: ${errorText}`
       );
     }
 
-    const partData =
-      await partResponse.json();
+    partData = await partResponse.json();
+
+    if (!partData.success || !partData.etag) {
+      throw new Error(
+        "Cloudflare no devolvió un ETag válido."
+      );
+    }
+
+    // La parte se subió correctamente
+    break;
+
+  } catch (error) {
+    ultimoError = error;
+
+    console.warn(
+      `Parte ${partNumber}: intento ${intento}/5`,
+      error
+    );
+
+    if (intento < 5) {
+      const espera = 2000 * Math.pow(2, intento - 1);
+
+      await new Promise(resolve =>
+        setTimeout(resolve, espera)
+      );
+    }
+  }
+}
+
+if (!partData) {
+  throw new Error(
+    `No se pudo subir la parte ${partNumber} después de 5 intentos: ${ultimoError?.message || "Error desconocido"}`
+  );
+}
 
     parts.push({
       partNumber,
