@@ -30,8 +30,9 @@ function renderHeader(){
       <div class="container nav">
         <a href="index.html" class="brand">JL <span>NewReleases</span></a>
         <nav class="nav-links">
-          ${NAV_ITEMS.map(item => `<a href="${item.href}" class="${item.href === currentPage ? "active" : ""}">${item.label}</a>`).join("")}
-        </nav>
+  ${NAV_ITEMS.map(item => `<a href="${item.href}" class="${item.href === currentPage ? "active" : ""}">${item.label}</a>`).join("")}
+  <span id="admin-publish-slot"></span>
+</nav>
         <div class="nav-icons">
           <a class="whatsapp-link" href="${WHATSAPP_URL}" target="_blank" rel="noopener">${whatsappIcon}<span>WhatsApp</span></a>
           <span id="auth-slot"><a href="login.html" class="nav-links-item" style="font-size:.9rem;color:var(--text-muted);">Entrar</a></span>
@@ -43,13 +44,76 @@ function renderHeader(){
   // Estado de sesión (asíncrono, no bloquea el resto del render)
   import("./firebase.js").then(({ auth }) => {
     import("https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js").then(({ onAuthStateChanged }) => {
-      onAuthStateChanged(auth, (user) => {
-        const authSlot = document.getElementById("auth-slot");
-        if(!authSlot) return;
-        authSlot.innerHTML = user
-          ? `<a href="perfil.html" style="font-size:.9rem;color:var(--text-muted);">${user.email}</a>`
-          : `<a href="login.html" style="font-size:.9rem;color:var(--text-muted);">Entrar</a>`;
-      });
+      onAuthStateChanged(auth, async (user) => {
+
+  const authSlot = document.getElementById("auth-slot");
+  const adminSlot = document.getElementById("admin-publish-slot");
+
+  if (!authSlot) return;
+
+  if (!user) {
+
+    authSlot.innerHTML =
+      `<a href="login.html" style="font-size:.9rem;color:var(--text-muted);">Entrar</a>`;
+
+    if (adminSlot) {
+      adminSlot.innerHTML = "";
+    }
+
+    return;
+  }
+
+  authSlot.innerHTML =
+    `<a href="perfil.html" style="font-size:.9rem;color:var(--text-muted);">${user.email}</a>`;
+
+  try {
+
+    const { db } = await import("./firebase.js");
+
+    const { doc, getDoc } =
+      await import("https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js");
+
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (
+      userSnap.exists() &&
+      userSnap.data().role === "admin"
+    ) {
+
+      if (adminSlot) {
+        adminSlot.innerHTML = `
+          <a
+            href="admin/subir.html"
+            class="admin-publish-link"
+          >
+            🎬 Publicar video
+          </a>
+        `;
+      }
+
+    } else {
+
+      if (adminSlot) {
+        adminSlot.innerHTML = "";
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "No se pudo comprobar el rol del usuario:",
+      error
+    );
+
+    if (adminSlot) {
+      adminSlot.innerHTML = "";
+    }
+
+  }
+
+});
     });
   }).catch(() => { /* Firebase no disponible offline; se ignora en la demo */ });
 }
